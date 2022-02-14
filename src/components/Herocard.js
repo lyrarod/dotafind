@@ -141,7 +141,8 @@ export default function Herocard({ allHeroes, loadingData }) {
           let iconBtn = (
             <>
               <img
-                src={hero.visible ? url + hero.icon : bgBtn}
+                src={url + hero.icon}
+                // src={hero.visible ? url + hero.icon : bgBtn}
                 alt={hero.visible ? hero.name : "DotaFindHero"}
                 title={hero.visible ? hero.name : null}
                 onError={onImageError}

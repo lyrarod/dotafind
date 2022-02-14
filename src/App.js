@@ -22,6 +22,7 @@ function App() {
           name: localized_name,
           img,
           icon,
+          // isVisible: false,
         };
       });
 

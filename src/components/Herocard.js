@@ -9,7 +9,7 @@ export default function Herocard({ allHeroes, loadingData }) {
   const [myHero, setMyHero] = React.useState("");
   const [isAnimationEnd, setIsAnimationEnd] = React.useState(true);
 
-  const url = "https://steamcdn-a.akamaihd.net";
+  const BASE_URL = "https://steamcdn-a.akamaihd.net";
 
   const filterHeroes = React.useCallback((arr) => {
     let count = 20;
@@ -17,7 +17,6 @@ export default function Herocard({ allHeroes, loadingData }) {
 
     for (let i = 0; i < count; i++) {
       const heroStat = arr[Math.floor(Math.random() * arr.length)];
-      heroStat.visible = false;
 
       !arrayAllHeroes.includes(heroStat)
         ? arrayAllHeroes.push(heroStat)
@@ -35,27 +34,22 @@ export default function Herocard({ allHeroes, loadingData }) {
   }, [filterHeroes, allHeroes]);
 
   const getRandomHero = (arr) => {
-    const { id, name, img, icon } = arr[Math.floor(Math.random() * arr.length)];
+    const randomHero = arr[Math.floor(Math.random() * arr.length)];
+    const { id, name, img, icon } = randomHero;
 
-    setRandomHero({
-      id,
-      name,
-      img,
-      icon,
-    });
+    setRandomHero(randomHero);
 
-    // console.log("random hero:", { id, name });
+    console.log("RANDOM HERO:", { id, name });
   };
 
-  const handleClickMyHero = (hero, index) => {
+  const handleClickMyHero = (hero) => {
     const newGridRandomHeroes = [...gridHeroes];
-    newGridRandomHeroes[index].visible = true;
     setGridHeroes(newGridRandomHeroes);
 
     setMyHero(hero);
     setIsAnimationEnd(false);
 
-    // console.log(hero);
+    console.log(hero);
   };
 
   return loadingData ? (
@@ -64,10 +58,10 @@ export default function Herocard({ allHeroes, loadingData }) {
     <div className={"mainCard"}>
       <div className="heroesCard">
         <div className={"image_container"}>
-          {myHero ? (
+          {!myHero && (
             <img
-              src={url + myHero.img}
-              alt={myHero.name}
+              src={BASE_URL + randomHero.img}
+              alt={randomHero.name}
               onAnimationEnd={() => setIsAnimationEnd(true)}
               className={
                 !isAnimationEnd && myHero.id !== randomHero.id
@@ -77,11 +71,20 @@ export default function Herocard({ allHeroes, loadingData }) {
                   : null
               }
             />
-          ) : (
+          )}
+
+          {myHero && (
             <img
-              src={bgBtn}
-              alt="Dota Find Hero"
-              style={{ maxHeight: "80%", width: "auto" }}
+              src={BASE_URL + myHero.img}
+              alt={myHero.name}
+              onAnimationEnd={() => setIsAnimationEnd(true)}
+              className={
+                !isAnimationEnd && myHero.id !== randomHero.id
+                  ? "animate__animated animate__flipInX"
+                  : !isAnimationEnd && myHero.id === randomHero.id
+                  ? "animate__animated animate__tada"
+                  : null
+              }
             />
           )}
         </div>
@@ -126,49 +129,40 @@ export default function Herocard({ allHeroes, loadingData }) {
               fontWeight: "700",
             }}
           >
-            {!myHero.name ? "Dota Find Hero" : myHero.name}
+            {myHero?.name || randomHero?.name}
           </div>
         </button>
       </div>
 
       <div className="btnIconHeroes">
         {gridHeroes.map((hero, i) => {
-          const onImageError = (e) => {
-            e.target.src = url + hero.img;
+          // handleImageError Callback Function
+          function handleImageError(e) {
+            e.target.src = BASE_URL + hero.img;
             e.target.style.borderRadius = "50%";
-          };
+          }
 
           let iconBtn = (
-            <>
-              <img
-                src={url + hero.icon}
-                // src={hero.visible ? url + hero.icon : bgBtn}
-                alt={hero.visible ? hero.name : "DotaFindHero"}
-                title={hero.visible ? hero.name : null}
-                onError={onImageError}
-                style={{
-                  width: "32px",
-                  height: "32px",
-                  overflow: "hidden",
-                }}
-              />
-            </>
+            <img
+              src={BASE_URL + hero.icon}
+              // src={hero.isVisible ? BASE_URL + hero.icon : bgBtn}
+              alt={hero.name}
+              // alt={hero.isVisible ? hero.name : "DotaFindHero"}
+              title={hero.name}
+              // title={hero.isVisible ? hero.name : null}
+              onError={handleImageError}
+              style={{
+                width: "30px",
+                height: "30px",
+                overflow: "hidden",
+              }}
+            />
           );
 
           return (
             <button
               key={hero.id}
-              onClick={() => isAnimationEnd && handleClickMyHero(hero, i)}
-              style={{
-                background:
-                  myHero === hero && hero.id !== randomHero.id
-                    ? "white" // Selected hero
-                    : hero.id === randomHero.id && hero.visible
-                    ? "linear-gradient(to right, #43e97b 0%, #38f9d7 100%)" //Correto
-                    : hero.id !== randomHero.id && hero.visible
-                    ? "linear-gradient(to right, #ff8177 0%, #ff867a 0%, #ff8c7f 21%, #f99185 52%, #cf556c 78%, #b12a5b 100%)" // Errado
-                    : "transparent",
-              }}
+              onClick={() => isAnimationEnd && handleClickMyHero(hero)}
             >
               {iconBtn}
             </button>

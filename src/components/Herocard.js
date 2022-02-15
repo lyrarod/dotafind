@@ -1,5 +1,4 @@
 import React from "react";
-import bgBtn from "./bg-btn.png";
 import loader from "./loader.png";
 import "./styles.css";
 
@@ -12,15 +11,15 @@ export default function Herocard({ allHeroes, loadingData }) {
   const BASE_URL = "https://steamcdn-a.akamaihd.net";
 
   const filterHeroes = React.useCallback((arr) => {
-    let count = 20;
+    let numHeros = 20;
     const arrayAllHeroes = [];
 
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < numHeros; i++) {
       const heroStat = arr[Math.floor(Math.random() * arr.length)];
 
       !arrayAllHeroes.includes(heroStat)
         ? arrayAllHeroes.push(heroStat)
-        : count++;
+        : numHeros++;
     }
 
     setGridHeroes(arrayAllHeroes);
@@ -39,17 +38,46 @@ export default function Herocard({ allHeroes, loadingData }) {
 
     setRandomHero(randomHero);
 
-    console.log("RANDOM HERO:", { id, name });
+    console.log("RANDOM HERO:", name);
+  };
+
+  let idInterval, idTimeOut;
+
+  React.useEffect(() => {
+    idInterval = setInterval(shuffleGridRandomHeroes, 3000);
+
+    return () => clearInterval(idInterval);
+  }, [gridHeroes]);
+
+  const shuffleGridRandomHeroes = () => {
+    const newGridRandomHeroes = [...gridHeroes];
+    const shuffledArray = newGridRandomHeroes.sort(() => Math.random() - 0.5);
+    setGridHeroes(shuffledArray);
+    // console.log(shuffledArray);
   };
 
   const handleClickMyHero = (hero) => {
-    const newGridRandomHeroes = [...gridHeroes];
-    setGridHeroes(newGridRandomHeroes);
+    clearTimeout(idTimeOut);
+    if (hero.id === randomHero.id) {
+      clearInterval(idInterval);
+      console.log("MATCH !");
+    } else {
+      console.log("NOT MATCH !");
+    }
 
     setMyHero(hero);
     setIsAnimationEnd(false);
 
-    console.log(hero);
+    // console.log(hero);
+  };
+
+  const handleOnAnimationEnd = () => {
+    if (myHero?.id === randomHero?.id) {
+      clearInterval(idInterval);
+      idTimeOut = setTimeout(() => filterHeroes(allHeroes), 5000);
+      console.log("onAnimationEnd...");
+    }
+    setIsAnimationEnd(true);
   };
 
   return loadingData ? (
@@ -58,22 +86,22 @@ export default function Herocard({ allHeroes, loadingData }) {
     <div className={"mainCard"}>
       <div className="heroesCard">
         <div className={"image_container"}>
-          {!myHero && (
+          {
             <img
               src={BASE_URL + randomHero.img}
               alt={randomHero.name}
-              onAnimationEnd={() => setIsAnimationEnd(true)}
+              onAnimationEnd={handleOnAnimationEnd}
               className={
-                !isAnimationEnd && myHero.id !== randomHero.id
-                  ? "animate__animated animate__flipInX"
-                  : !isAnimationEnd && myHero.id === randomHero.id
+                // !isAnimationEnd && myHero.id !== randomHero.id
+                //   ? "animate__animated animate__flipInX"
+                !isAnimationEnd && myHero.id === randomHero.id
                   ? "animate__animated animate__tada"
-                  : null
+                  : ""
               }
             />
-          )}
+          }
 
-          {myHero && (
+          {/* {myHero && (
             <img
               src={BASE_URL + myHero.img}
               alt={myHero.name}
@@ -86,7 +114,7 @@ export default function Herocard({ allHeroes, loadingData }) {
                   : null
               }
             />
-          )}
+          )} */}
         </div>
       </div>
       <div
@@ -96,16 +124,17 @@ export default function Herocard({ allHeroes, loadingData }) {
         }}
       >
         <button
-          onClick={() => filterHeroes(allHeroes)}
-          disabled={
-            isAnimationEnd && myHero.id === randomHero.id ? false : true
-          }
+          // onClick={() => isAnimationEnd && shuffleGridRandomHeroes()}
+          // onClick={() => isAnimationEnd && filterHeroes(allHeroes)}
+          // disabled={
+          //   isAnimationEnd && myHero.id === randomHero.id ? false : true
+          // }
           style={{
             width: "100%",
             height: "100%",
             border: "0",
             background:
-              myHero && myHero.id === randomHero.id
+              myHero?.id === randomHero?.id
                 ? "linear-gradient(to right, #43e97b 0%, #38f9d7 100%)"
                 : "#ddd",
             color:
@@ -115,21 +144,22 @@ export default function Herocard({ allHeroes, loadingData }) {
                 ? "#555" //Errado
                 : "#333", //Não Certo, Não Errado
 
-            cursor: myHero.id === randomHero.id ? "pointer" : "default",
+            // cursor: "default",
+            // cursor: myHero.id === randomHero.id ? "pointer" : "default",
           }}
         >
           <div
             className={
-              !isAnimationEnd && myHero.id === randomHero.id
+              !isAnimationEnd && myHero === randomHero
                 ? "animate__animated animate__tada"
-                : null
+                : ""
             }
             style={{
               fontSize: "1.4rem",
               fontWeight: "700",
             }}
           >
-            {myHero?.name || randomHero?.name}
+            {randomHero?.name}
           </div>
         </button>
       </div>
@@ -162,7 +192,8 @@ export default function Herocard({ allHeroes, loadingData }) {
           return (
             <button
               key={hero.id}
-              onClick={() => isAnimationEnd && handleClickMyHero(hero)}
+              onClick={() => handleClickMyHero(hero)}
+              disabled={myHero.id === randomHero.id}
             >
               {iconBtn}
             </button>

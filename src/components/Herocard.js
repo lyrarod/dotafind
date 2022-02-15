@@ -41,14 +41,6 @@ export default function Herocard({ allHeroes, loadingData }) {
     console.log("RANDOM HERO:", name);
   };
 
-  let idInterval, idTimeOut;
-
-  React.useEffect(() => {
-    idInterval = setInterval(shuffleGridRandomHeroes, 3000);
-
-    return () => clearInterval(idInterval);
-  }, [gridHeroes]);
-
   const shuffleGridRandomHeroes = () => {
     const newGridRandomHeroes = [...gridHeroes];
     const shuffledArray = newGridRandomHeroes.sort(() => Math.random() - 0.5);
@@ -56,12 +48,22 @@ export default function Herocard({ allHeroes, loadingData }) {
     // console.log(shuffledArray);
   };
 
+  let idInterval, idTimeOut;
+
+  // React.useEffect(() => {
+  //   idInterval = setInterval(shuffleGridRandomHeroes, 3000);
+
+  //   return () => clearInterval(idInterval);
+  // }, [shuffleGridRandomHeroes]);
+
   const handleClickMyHero = (hero) => {
-    clearTimeout(idTimeOut);
-    if (hero.id === randomHero.id) {
+    // clearTimeout(idTimeOut);
+    if (randomHero?.id === hero?.id) {
       clearInterval(idInterval);
       console.log("MATCH !");
+      console.log("IdInterval", idInterval);
     } else {
+      // shuffleGridRandomHeroes();
       console.log("NOT MATCH !");
     }
 
@@ -72,12 +74,9 @@ export default function Herocard({ allHeroes, loadingData }) {
   };
 
   const handleOnAnimationEnd = () => {
-    if (myHero?.id === randomHero?.id) {
-      clearInterval(idInterval);
-      idTimeOut = setTimeout(() => filterHeroes(allHeroes), 5000);
-      console.log("onAnimationEnd...");
-    }
     setIsAnimationEnd(true);
+    idTimeOut = setTimeout(() => filterHeroes(allHeroes), 3000);
+    console.log("onAnimationEnd...");
   };
 
   return loadingData ? (
@@ -141,8 +140,8 @@ export default function Herocard({ allHeroes, loadingData }) {
               myHero && myHero.id === randomHero.id
                 ? "#111" //Certo
                 : myHero && myHero.id !== randomHero.id
-                ? "#555" //Errado
-                : "#333", //Não Certo, Não Errado
+                ? "#111" //Errado
+                : "#111", //Não Certo, Não Errado
 
             // cursor: "default",
             // cursor: myHero.id === randomHero.id ? "pointer" : "default",
@@ -150,7 +149,7 @@ export default function Herocard({ allHeroes, loadingData }) {
         >
           <div
             className={
-              !isAnimationEnd && myHero === randomHero
+              !isAnimationEnd && myHero?.id === randomHero?.id
                 ? "animate__animated animate__tada"
                 : ""
             }
@@ -182,8 +181,8 @@ export default function Herocard({ allHeroes, loadingData }) {
               // title={hero.isVisible ? hero.name : null}
               onError={handleImageError}
               style={{
-                width: "30px",
-                height: "30px",
+                width: "32px",
+                height: "32px",
                 overflow: "hidden",
               }}
             />
@@ -194,6 +193,14 @@ export default function Herocard({ allHeroes, loadingData }) {
               key={hero.id}
               onClick={() => handleClickMyHero(hero)}
               disabled={myHero.id === randomHero.id}
+              style={{
+                backgroundColor:
+                  myHero === randomHero && myHero?.id === hero?.id
+                    ? "green"
+                    : myHero !== randomHero && myHero?.id === hero?.id
+                    ? "red"
+                    : "transparent",
+              }}
             >
               {iconBtn}
             </button>

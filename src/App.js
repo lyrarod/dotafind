@@ -12,6 +12,7 @@ function App() {
   React.useEffect(() => {
     (async () => {
       setLoadingData(true);
+
       const response = await fetch("https://api.opendota.com/api/heroStats");
       const dataJson = await response.json();
       // console.log(dataJson);

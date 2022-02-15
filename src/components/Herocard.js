@@ -38,7 +38,7 @@ export default function Herocard({ allHeroes, loadingData }) {
 
     setRandomHero(randomHero);
 
-    console.log("RANDOM HERO:", name);
+    // console.log("RANDOM HERO:", name);
   };
 
   const shuffleGridRandomHeroes = () => {
@@ -50,20 +50,20 @@ export default function Herocard({ allHeroes, loadingData }) {
 
   let idInterval, idTimeOut;
 
-  // React.useEffect(() => {
-  //   idInterval = setInterval(shuffleGridRandomHeroes, 3000);
+  React.useEffect(() => {
+    idInterval = setInterval(shuffleGridRandomHeroes, 3000);
 
-  //   return () => clearInterval(idInterval);
-  // }, [shuffleGridRandomHeroes]);
+    return () => clearInterval(idInterval);
+  }, [shuffleGridRandomHeroes]);
 
   const handleClickMyHero = (hero) => {
     // clearTimeout(idTimeOut);
     if (randomHero?.id === hero?.id) {
       clearInterval(idInterval);
       console.log("MATCH !");
-      console.log("IdInterval", idInterval);
+      // console.log("IdInterval", idInterval);
     } else {
-      // shuffleGridRandomHeroes();
+      shuffleGridRandomHeroes();
       console.log("NOT MATCH !");
     }
 
@@ -76,7 +76,7 @@ export default function Herocard({ allHeroes, loadingData }) {
   const handleOnAnimationEnd = () => {
     setIsAnimationEnd(true);
     idTimeOut = setTimeout(() => filterHeroes(allHeroes), 3000);
-    console.log("onAnimationEnd...");
+    // console.log("onAnimationEnd...");
   };
 
   return loadingData ? (
@@ -99,21 +99,6 @@ export default function Herocard({ allHeroes, loadingData }) {
               }
             />
           }
-
-          {/* {myHero && (
-            <img
-              src={BASE_URL + myHero.img}
-              alt={myHero.name}
-              onAnimationEnd={() => setIsAnimationEnd(true)}
-              className={
-                !isAnimationEnd && myHero.id !== randomHero.id
-                  ? "animate__animated animate__flipInX"
-                  : !isAnimationEnd && myHero.id === randomHero.id
-                  ? "animate__animated animate__tada"
-                  : null
-              }
-            />
-          )} */}
         </div>
       </div>
       <div
@@ -123,11 +108,6 @@ export default function Herocard({ allHeroes, loadingData }) {
         }}
       >
         <button
-          // onClick={() => isAnimationEnd && shuffleGridRandomHeroes()}
-          // onClick={() => isAnimationEnd && filterHeroes(allHeroes)}
-          // disabled={
-          //   isAnimationEnd && myHero.id === randomHero.id ? false : true
-          // }
           style={{
             width: "100%",
             height: "100%",
@@ -135,16 +115,13 @@ export default function Herocard({ allHeroes, loadingData }) {
             background:
               myHero?.id === randomHero?.id
                 ? "linear-gradient(to right, #43e97b 0%, #38f9d7 100%)"
-                : "#ddd",
+                : "",
             color:
               myHero && myHero.id === randomHero.id
                 ? "#111" //Certo
                 : myHero && myHero.id !== randomHero.id
                 ? "#111" //Errado
                 : "#111", //Não Certo, Não Errado
-
-            // cursor: "default",
-            // cursor: myHero.id === randomHero.id ? "pointer" : "default",
           }}
         >
           <div
@@ -168,7 +145,7 @@ export default function Herocard({ allHeroes, loadingData }) {
           // handleImageError Callback Function
           function handleImageError(e) {
             e.target.src = BASE_URL + hero.img;
-            e.target.style.borderRadius = "50%";
+            // e.target.style.borderRadius = "50%";
           }
 
           let iconBtn = (
@@ -192,15 +169,7 @@ export default function Herocard({ allHeroes, loadingData }) {
             <button
               key={hero.id}
               onClick={() => handleClickMyHero(hero)}
-              disabled={myHero.id === randomHero.id}
-              style={{
-                backgroundColor:
-                  myHero === randomHero && myHero?.id === hero?.id
-                    ? "green"
-                    : myHero !== randomHero && myHero?.id === hero?.id
-                    ? "red"
-                    : "transparent",
-              }}
+              disabled={myHero?.id === randomHero?.id}
             >
               {iconBtn}
             </button>

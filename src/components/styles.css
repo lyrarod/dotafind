@@ -3,69 +3,9 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-top-left-radius: 2rem;
-  border-top-right-radius: 2rem;
-  box-shadow: 0 10px 10px #1117;
-
-  background-image: radial-gradient(
-      circle at center center,
-      transparent 0%,
-      rgb(0, 0, 0) 85%
-    ),
-    linear-gradient(
-      78deg,
-      rgba(192, 192, 192, 0.05) 0%,
-      rgba(192, 192, 192, 0.05) 50%,
-      rgba(60, 60, 60, 0.05) 50%,
-      rgba(60, 60, 60, 0.05) 100%
-    ),
-    linear-gradient(
-      227deg,
-      rgba(97, 97, 97, 0.05) 0%,
-      rgba(97, 97, 97, 0.05) 50%,
-      rgba(52, 52, 52, 0.05) 50%,
-      rgba(52, 52, 52, 0.05) 100%
-    ),
-    linear-gradient(
-      240deg,
-      rgba(98, 98, 98, 0.05) 0%,
-      rgba(98, 98, 98, 0.05) 50%,
-      rgba(249, 249, 249, 0.05) 50%,
-      rgba(249, 249, 249, 0.05) 100%
-    ),
-    linear-gradient(
-      187deg,
-      rgba(1, 1, 1, 0.05) 0%,
-      rgba(1, 1, 1, 0.05) 50%,
-      rgba(202, 202, 202, 0.05) 50%,
-      rgba(202, 202, 202, 0.05) 100%
-    ),
-    linear-gradient(
-      101deg,
-      rgba(61, 61, 61, 0.05) 0%,
-      rgba(61, 61, 61, 0.05) 50%,
-      rgba(254, 254, 254, 0.05) 50%,
-      rgba(254, 254, 254, 0.05) 100%
-    ),
-    linear-gradient(
-      176deg,
-      rgba(237, 237, 237, 0.05) 0%,
-      rgba(237, 237, 237, 0.05) 50%,
-      rgba(147, 147, 147, 0.05) 50%,
-      rgba(147, 147, 147, 0.05) 100%
-    ),
-    linear-gradient(
-      304deg,
-      rgba(183, 183, 183, 0.05) 0%,
-      rgba(183, 183, 183, 0.05) 50%,
-      rgba(57, 57, 57, 0.05) 50%,
-      rgba(57, 57, 57, 0.05) 100%
-    ),
-    radial-gradient(
-      circle at center center,
-      hsl(351, 4%, 12%),
-      hsl(351, 4%, 12%)
-    );
+  border-radius: 8px;
+  box-shadow: 0 0 16px #0007;
+  background: #fff9;
 }
 
 .heroesCard {
@@ -81,8 +21,6 @@
 .heroesCard img {
   width: 256px;
   height: 144px;
-  border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;
 }
 
 .image_container {
@@ -95,11 +33,12 @@
 .btnIconHeroes {
   width: 256px;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   place-items: center;
-  grid-gap: 0.25rem;
+  row-gap: 8px;
   margin: 0 auto;
-  padding: 1rem 0;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
   /* background: cyan; */
 }
 
@@ -108,13 +47,13 @@
   height: 46px;
   display: grid;
   place-items: center;
-  border: none;
-  background-color: #fff7;
-  border-radius: 100%;
+  border: 1px solid #0009;
+  background-color: #fff;
+  border-radius: 2px;
   overflow: hidden;
 }
 .btnIconHeroes button:active {
-  transform: scale(0.96);
+  transform: scale(0.97);
 }
 
 .btnIconHeroes button:disabled {

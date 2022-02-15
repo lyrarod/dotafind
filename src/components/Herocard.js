@@ -5,7 +5,7 @@ import "./styles.css";
 export default function Herocard({ allHeroes, loadingData }) {
   const [gridHeroes, setGridHeroes] = React.useState([]);
   const [randomHero, setRandomHero] = React.useState([]);
-  const [myHero, setMyHero] = React.useState("");
+  const [myHero, setMyHero] = React.useState({});
   const [isAnimationEnd, setIsAnimationEnd] = React.useState(true);
 
   const BASE_URL = "https://steamcdn-a.akamaihd.net";
@@ -25,7 +25,7 @@ export default function Herocard({ allHeroes, loadingData }) {
     setGridHeroes(arrayAllHeroes);
     getRandomHero(arrayAllHeroes);
 
-    setMyHero("");
+    setMyHero({});
   }, []);
 
   React.useEffect(() => {
@@ -58,7 +58,7 @@ export default function Herocard({ allHeroes, loadingData }) {
 
   const handleClickMyHero = (hero) => {
     // clearTimeout(idTimeOut);
-    if (randomHero?.id === hero?.id) {
+    if (hero?.id === randomHero?.id) {
       clearInterval(idInterval);
       console.log("MATCH !");
       // console.log("IdInterval", idInterval);
@@ -70,7 +70,7 @@ export default function Herocard({ allHeroes, loadingData }) {
     setMyHero(hero);
     setIsAnimationEnd(false);
 
-    // console.log(hero);
+    console.log(hero);
   };
 
   const handleOnAnimationEnd = () => {

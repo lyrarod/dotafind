@@ -60,7 +60,7 @@
   cursor: default;
 }
 
-@media (min-width: 375px) {
+@media (min-width: 415px) {
   .mainCard {
     width: 380px;
   }

@@ -57,17 +57,16 @@ export default function Herocard({ allHeroes, loadingData }) {
   const handleClickMyHero = (hero) => {
     if (hero?.id === randomHero?.id) {
       clearInterval(idInterval.current);
-      console.log("MATCH !");
-      // console.log("IdInterval", idInterval);
+      // console.log("MATCH !");
     } else {
       shuffleGridRandomHeroes();
-      console.log("NOT MATCH !");
+      // console.log("NOT MATCH !");
     }
 
     setMyHero(hero);
     setIsAnimationEnd(false);
 
-    console.log(hero);
+    // console.log(hero);
   };
 
   const handleOnAnimationEnd = () => {
@@ -88,8 +87,6 @@ export default function Herocard({ allHeroes, loadingData }) {
               alt={randomHero.name}
               onAnimationEnd={handleOnAnimationEnd}
               className={
-                // !isAnimationEnd && myHero.id !== randomHero.id
-                //   ? "animate__animated animate__flipInX"
                 !isAnimationEnd && myHero.id === randomHero.id
                   ? "animate__animated animate__tada"
                   : ""
@@ -142,17 +139,13 @@ export default function Herocard({ allHeroes, loadingData }) {
           // handleImageError Callback Function
           function handleImageError(e) {
             e.target.src = BASE_URL + hero.img;
-            // e.target.style.borderRadius = "50%";
           }
 
           let iconBtn = (
             <img
               src={BASE_URL + hero.icon}
-              // src={hero.isVisible ? BASE_URL + hero.icon : bgBtn}
               alt={hero.name}
-              // alt={hero.isVisible ? hero.name : "DotaFindHero"}
               title={hero.name}
-              // title={hero.isVisible ? hero.name : null}
               onError={handleImageError}
               style={{
                 width: "32px",

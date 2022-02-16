@@ -57,7 +57,6 @@ export default function Herocard({ allHeroes, loadingData }) {
   }, [shuffleGridRandomHeroes]);
 
   const handleClickMyHero = (hero) => {
-    // clearTimeout(idTimeOut);
     if (hero?.id === randomHero?.id) {
       clearInterval(idInterval);
       console.log("MATCH !");

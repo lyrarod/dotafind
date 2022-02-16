@@ -45,7 +45,7 @@ export default function Herocard({ allHeroes, loadingData }) {
     const shuffledArray = newGridRandomHeroes.sort(() => Math.random() - 0.5);
     setGridHeroes(shuffledArray);
     // console.log(shuffledArray);
-  });
+  }, [gridHeroes]);
 
   let idInterval = React.useRef();
   React.useEffect(() => {

@@ -34,31 +34,29 @@ export default function Herocard({ allHeroes, loadingData }) {
 
   const getRandomHero = (arr) => {
     const randomHero = arr[Math.floor(Math.random() * arr.length)];
-    const { id, name, img, icon } = randomHero;
 
     setRandomHero(randomHero);
 
     // console.log("RANDOM HERO:", name);
   };
 
-  const shuffleGridRandomHeroes = () => {
+  const shuffleGridRandomHeroes = React.useCallback(() => {
     const newGridRandomHeroes = [...gridHeroes];
     const shuffledArray = newGridRandomHeroes.sort(() => Math.random() - 0.5);
     setGridHeroes(shuffledArray);
     // console.log(shuffledArray);
-  };
+  });
 
-  let idInterval, idTimeOut;
-
+  let idInterval = React.useRef();
   React.useEffect(() => {
-    idInterval = setInterval(shuffleGridRandomHeroes, 3000);
+    idInterval.current = setInterval(shuffleGridRandomHeroes, 3000);
 
-    return () => clearInterval(idInterval);
+    return () => clearInterval(idInterval.current);
   }, [shuffleGridRandomHeroes]);
 
   const handleClickMyHero = (hero) => {
     if (hero?.id === randomHero?.id) {
-      clearInterval(idInterval);
+      clearInterval(idInterval.current);
       console.log("MATCH !");
       // console.log("IdInterval", idInterval);
     } else {
@@ -74,7 +72,7 @@ export default function Herocard({ allHeroes, loadingData }) {
 
   const handleOnAnimationEnd = () => {
     setIsAnimationEnd(true);
-    idTimeOut = setTimeout(() => filterHeroes(allHeroes), 3000);
+    setTimeout(() => filterHeroes(allHeroes), 3000);
     // console.log("onAnimationEnd...");
   };
 
